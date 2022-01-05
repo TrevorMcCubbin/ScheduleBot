@@ -1,0 +1,78 @@
+{
+    "monday": [
+        {
+            "name": "Software Deployment",
+            "classroom": "4H.15",
+            "time": "10:00",
+            "duration": "90"
+        },
+        {
+            "name": "Web Development Project",
+            "classroom": "4H.21",
+            "time": "11:30",
+            "duration": "90"
+        },
+        {
+            "name": "Web Development Project",
+            "classroom": "2F.16",
+            "time": "13:00",
+            "duration": "180"
+        },
+        {
+            "name": "Internship",
+            "classroom": "3F.39",
+            "time": "16:00",
+            "duration": "90"
+        }
+    ],
+    "tuesday": [
+        {
+            "name": "Working in the Profession",
+            "classroom": "4H.17",
+            "time": "10:00",
+            "duration": "180"
+        },
+        {
+            "name": "Software Deployment",
+            "classroom": "2F.16",
+            "time": "14:30",
+            "duration": "180"
+        }
+    ],
+    "wednesday": [
+        {
+            "name": "Web Development Project",
+            "classroom": "4H.21",
+            "time": "11:30",
+            "duration": "90"
+        }
+    ],
+    "thursday": [
+        {
+            "name": "Software Deployment",
+            "classroom": "2F.14",
+            "time": "10:00",
+            "duration": "90"
+        },
+        {
+            "name": "Web Development Project",
+            "classroom": "2F.16",
+            "time": "13:00",
+            "duration": "180"
+        }
+    ],
+    "friday": [
+        {
+            "name": "Software Deployment",
+            "classroom": "4H.19",
+            "time": "10:00",
+            "duration": "90"
+        },
+        {
+            "name": "Working in the Profession",
+            "classroom": "2F.18",
+            "time": "13:00",
+            "duration": "90"
+        }
+    ]
+}
