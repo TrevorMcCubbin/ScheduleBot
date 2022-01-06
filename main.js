@@ -55,12 +55,12 @@ function determineNextClass(schedule) {
             }
             // if we reached the final class today, switch to the first class tomorrow
             if (course === schedule[dayOfWeek].length && dayOfWeek < 5) {
-                course = 0;
-                dayOfWeek++;
-                break;
-            } else if (dayOfWeek === 4) { // if it's friday, set next day to monday
-                course = 0;
-                dayOfWeek = 0;
+                course = 0; // first class of day
+                if (dayOfWeek === 4) { // If it's friday
+                    dayOfWeek = 0; // set day to monday
+                } else {
+                    dayOfWeek++; // otherwise just go to the next day of the week
+                }
                 break;
             }
         }
