@@ -64,10 +64,6 @@ function determineNextClass(schedule) {
                 break;
             }
         }
-        // for each class there is in the schedule today
-        schedule[dayOfWeek].forEach((course) => {
-
-        });
     }
     let nextClass = schedule[dayOfWeek][course];
     console.log(nextClass);
