@@ -1,12 +1,3 @@
-/**
- * Converts hours in 24h format to milliseconds
- * @param {string} time Hour in 24h format
- * @returns milliseconds representing the hour
- */
-function hoursToMilliseconds(time) {
-    return timeToMins(time) * 3600 * 1000;
-}
-
 // three functions below taken from https://stackoverflow.com/a/25765236/13522077
 
 /**
@@ -43,4 +34,4 @@ function addTimes(hour, duration) {
     return timeFromMins(timeToMins(hour) + duration);
 }
 
-module.exports = { hoursToMilliseconds, timeToMins, timeFromMins, addTimes }
+module.exports = { timeToMins, timeFromMins, addTimes }
