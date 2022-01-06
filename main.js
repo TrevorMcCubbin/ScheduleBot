@@ -11,11 +11,17 @@ client.once('ready', () => {
 
 client.login(token);
 
+/**
+ * Called as soon as the bot connects to the discord server
+ */
 function online() {
     console.log('online');
     fetchSchedule();
 }
 
+/**
+ * Fetches the json schedule and passes the data along.
+ */
 function fetchSchedule() {
     const schedule = require("./json_files/scheduleSect2.json");
     const today = new Date();
@@ -24,11 +30,39 @@ function fetchSchedule() {
     if (dayOfWeek === 0 || dayOfWeek === 6) {
         dayOfWeek = 1; // set today to monday
     }
-    let lastClassOfDay = schedule[dayOfWeek][schedule[dayOfWeek].length - 1];
-    // if the last class of today finished before the current time, change the dayOfTheWeek to tomorrow
-    if (hoursToMilliseconds(addTimes(lastClassOfDay.time, lastClassOfDay.duration)) <= today.getTime()) {
-        dayOfWeek++;
-    }
+    console.log(determineNextClass(schedule, dayOfWeek, today.getTime()));
+    //setClass(lastClassOfDay);
+}
+
+/**
+ * Determines which class is next in the schedule
+ * @param {JSON} schedule JSON schedule data
+ * @param {number} dayOfWeek The current day of the week
+ * @param {number} time The current time in milliseconds
+ * @returns The next class in JSON format
+ */
+function determineNextClass(schedule, dayOfWeek, time) {
+    // default is first course of day
+    let course = 0;
+    // for each class there is in the schedule today
+    schedule[dayOfWeek].forEach((course) => {
+        // If the current class finished in 45 minutes or later, go to the next class
+        if (time >= hoursToMilliseconds(addTimes(course.time, course.duration)) - hoursToMilliseconds("00:45")) {
+            course++;
+        }
+        // if we reached the final class today, switch to the first class tomorrow
+        if (course === schedule[dayOfWeek].length - 1) {
+            course = 0;
+            dayOfWeek++;
+        }
+    });
+    let nextClass = schedule[dayOfWeek][course];
+    return nextClass;
+}
+
+function setClass(course) {
+    client.user.setUsername(course.name);
+    client.user.setActivity(course.classroom);
 }
 
 function hoursToMilliseconds(time) {
