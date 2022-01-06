@@ -24,8 +24,8 @@ function online() {
  */
 function fetchSchedule() {
     const schedule = require("./json_files/scheduleSect2.json");
-    determineNextClass(schedule);
-    //setClass(lastClassOfDay);
+    let currentClass = determineNextClass(schedule);
+    setClass(currentClass);
 }
 
 /**
