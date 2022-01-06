@@ -1,5 +1,5 @@
-{
-    "monday": [
+[
+    [
         {
             "name": "Software Deployment",
             "classroom": "4H.15",
@@ -25,7 +25,7 @@
             "duration": "90"
         }
     ],
-    "tuesday": [
+    [
         {
             "name": "Working in the Profession",
             "classroom": "4H.17",
@@ -39,7 +39,7 @@
             "duration": "180"
         }
     ],
-    "wednesday": [
+    [
         {
             "name": "Web Development Project",
             "classroom": "4H.21",
@@ -47,7 +47,7 @@
             "duration": "90"
         }
     ],
-    "thursday": [
+    [
         {
             "name": "Software Deployment",
             "classroom": "2F.14",
@@ -61,7 +61,7 @@
             "duration": "180"
         }
     ],
-    "friday": [
+    [
         {
             "name": "Software Deployment",
             "classroom": "4H.19",
@@ -75,4 +75,4 @@
             "duration": "90"
         }
     ]
-}
+]
