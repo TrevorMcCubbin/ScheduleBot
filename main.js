@@ -24,38 +24,39 @@ function online() {
  */
 function fetchSchedule() {
     const schedule = require("./json_files/scheduleSect2.json");
-    const today = new Date();
-    let dayOfWeek = today.getDay();
-    // For sunday and saturday, fetch the schedule for monday
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
-        dayOfWeek = 1; // set today to monday
-    }
-    console.log(determineNextClass(schedule, dayOfWeek, today.getTime()));
+    determineNextClass(schedule);
     //setClass(lastClassOfDay);
 }
 
 /**
  * Determines which class is next in the schedule
  * @param {JSON} schedule JSON schedule data
- * @param {number} dayOfWeek The current day of the week
- * @param {number} time The current time in milliseconds
  * @returns The next class in JSON format
  */
-function determineNextClass(schedule, dayOfWeek, time) {
+function determineNextClass(schedule) {
+    const today = new Date();
+    let dayOfWeek = today.getDay();
+    let time = today.getTime();
     // default is first course of day
     let course = 0;
-    // for each class there is in the schedule today
-    schedule[dayOfWeek].forEach((course) => {
-        // If the current class finished in 45 minutes or later, go to the next class
-        if (time >= hoursToMilliseconds(addTimes(course.time, course.duration)) - hoursToMilliseconds("00:45")) {
-            course++;
-        }
-        // if we reached the final class today, switch to the first class tomorrow
-        if (course === schedule[dayOfWeek].length - 1) {
-            course = 0;
-            dayOfWeek++;
-        }
-    });
+
+    // For sunday and saturday, fetch the schedule for monday
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+        dayOfWeek = 1; // set today to monday
+    } else {
+        // for each class there is in the schedule today
+        schedule[dayOfWeek].forEach((course) => {
+            // If the current class finished in 45 minutes or later, go to the next class
+            if (time >= hoursToMilliseconds(addTimes(course.time, course.duration)) - hoursToMilliseconds("00:45")) {
+                course++;
+            }
+            // if we reached the final class today, switch to the first class tomorrow
+            if (course === schedule[dayOfWeek].length - 1) {
+                course = 0;
+                dayOfWeek++;
+            }
+        });
+    }
     let nextClass = schedule[dayOfWeek][course];
     return nextClass;
 }
