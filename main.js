@@ -70,6 +70,10 @@ function determineNextClass(schedule) {
     return nextClass;
 }
 
+/**
+ * Set's the bots username and activity to the next class
+ * @param {JSON} course The class object that will be set as the status
+ */
 function setClass(course) {
     client.user.setUsername(course.name);
     client.user.setActivity(course.classroom + ": " + course.time + "-" + timeCalcs.addTimes(course.time, course.duration));
