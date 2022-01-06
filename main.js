@@ -19,6 +19,9 @@ client.login(token);
 function online() {
     console.log('online');
     fetchSchedule();
+    setInterval(function () {
+        fetchSchedule()
+    }, 1000 * 60 * 5); // every 5 minutes
 }
 
 /**
