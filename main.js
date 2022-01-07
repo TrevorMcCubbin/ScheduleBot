@@ -40,7 +40,7 @@ function fetchSchedule() {
  */
 function determineNextClass(schedule) {
     const today = new Date();
-    let dayOfWeek = today.getDay() - 1; // -1 so that it works with the json array I set up (monday is 0 instead of 1 in the array)
+    let dayOfWeek = today.getDay() - 1 >= 0 ? today.getDay() - 1 : 0; // -1 so that it works with the json array I set up (monday is 0 instead of 1 in the array)
     let time = today.getHours() + ":" + today.getMinutes();
     // if semester hasn't started yet, show first class on jan 20th
     if (today.getDate() < 20 && today.getMonth() === 0) {
