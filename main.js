@@ -84,6 +84,13 @@ function determineNextClass(schedule) {
  * @param {JSON} course The class object that will be set as the status
  */
 function setClass(holiday, course) {
+    if (holiday && holiday.name != "online") {
+        client.user.setUsername(holiday.name);
+        client.user.setActivity("Until - " + holiday.end);
+    } else if (holiday && holiday.name === "online") {
+        client.user.setUsername(course.name);
+        client.user.setActivity(holiday.name + ": " + course.time + "-" + timeCalcs.addTimes(course.time, course.duration));
+    }
     client.user.setUsername(course.name);
     client.user.setActivity(course.classroom + ": " + course.time + "-" + timeCalcs.addTimes(course.time, course.duration));
 }
