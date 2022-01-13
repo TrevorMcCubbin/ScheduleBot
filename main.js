@@ -30,7 +30,8 @@ function online() {
 function fetchSchedule() {
     const schedule = require("./json_files/scheduleSect2.json");
     let currentClass = determineNextClass(schedule);
-    setClass(currentClass);
+    let holiday = checkHoliday(new Date());
+    setClass(holiday, currentClass);
 }
 
 /**
@@ -82,7 +83,24 @@ function determineNextClass(schedule) {
  * Set's the bots username and activity to the next class
  * @param {JSON} course The class object that will be set as the status
  */
-function setClass(course) {
+function setClass(holiday, course) {
     client.user.setUsername(course.name);
     client.user.setActivity(course.classroom + ": " + course.time + "-" + timeCalcs.addTimes(course.time, course.duration));
+}
+
+/**
+ * checks if the requested date is found in the holdiays json
+ * @param {Date} today 
+ */
+function checkHoliday(today) {
+    const holidays = require("./json_files/holidays.json");
+    const holidaysThisMonth = holidays[today.getMonth()];
+    if (holidaysThisMonth.length > 0) { // if there is a holiday this month
+        for (let i = 0; i < holidaysThisMonth.length; i++) { // for each holiday
+            if (today.getDay() >= new Date(holidaysThisMonth[i].start).getDate() &&
+                today.getDay() <= new Date(holidaysThisMonth[i].end).getDate()) {
+                return holidaysThisMonth[i];
+            }
+        }
+    }
 }
