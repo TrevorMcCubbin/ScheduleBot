@@ -46,7 +46,6 @@ function determineNextClass(schedule) {
     // if semester hasn't started yet, show first class on jan 20th
     if (today.getDate() < 20 && today.getMonth() === 0) {
         let nextClass = schedule[3][0]; // first class on thursday
-        console.log(nextClass);
         return nextClass;
     }
     // default is first course of day
@@ -75,7 +74,6 @@ function determineNextClass(schedule) {
         }
     }
     let nextClass = schedule[dayOfWeek][course];
-    console.log(nextClass);
     return nextClass;
 }
 
@@ -84,15 +82,19 @@ function determineNextClass(schedule) {
  * @param {JSON} course The class object that will be set as the status
  */
 function setClass(holiday, course) {
+    username = course.name;
+    activity = course.classroom + ": " + course.time + "-" + timeCalcs.addTimes(course.time, course.duration)
     if (holiday && holiday.name != "online") {
-        client.user.setUsername(holiday.name);
-        client.user.setActivity("Until - " + holiday.end);
+        username = holiday.name;
+        activity = "Until - " + holiday.end;
     } else if (holiday && holiday.name === "online") {
-        client.user.setUsername(course.name);
-        client.user.setActivity(holiday.name + ": " + course.time + "-" + timeCalcs.addTimes(course.time, course.duration));
+        activity = holiday.name + ": " + course.time + "-" + timeCalcs.addTimes(course.time, course.duration);
     }
-    client.user.setUsername(course.name);
-    client.user.setActivity(course.classroom + ": " + course.time + "-" + timeCalcs.addTimes(course.time, course.duration));
+    if (username != client.user.name) {
+        //client.user.setUsername(username);
+    }
+    client.user.setActivity(activity);
+    showLog(holiday, course);
 }
 
 /**
@@ -110,4 +112,19 @@ function checkHoliday(today) {
             }
         }
     }
+}
+
+/**
+ * Logs the current data when it is applied to the discord bot
+ * @param {JSON} holiday holiday JSON
+ * @param {JSON} course course json
+ */
+function showLog(holiday, course) {
+    const today = new Date();
+    console.log("\n---------------------------------------------------------------------")
+    console.log(today.toString() + "\n");
+    console.log("Current holiday:\n" + JSON.stringify(holiday) + "\n");
+    console.log("Current Class:\n" + JSON.stringify(course));
+    console.log("\n---------------------------------------------------------------------")
+
 }
