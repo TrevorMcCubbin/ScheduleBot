@@ -90,8 +90,11 @@ function setClass(holiday, course) {
     } else if (holiday && holiday.name === "online") {
         activity = holiday.name + ": " + course.time + "-" + timeCalcs.addTimes(course.time, course.duration);
     }
-    if (username != client.user.name) {
-        //client.user.setUsername(username);
+    if (username != client.user.username) {
+        client.user.setUsername(username)
+            .catch(() => {
+                console.log("Could not change username");
+            })
     }
     client.user.setActivity(activity);
     showLog(holiday, course);
@@ -126,5 +129,4 @@ function showLog(holiday, course) {
     console.log("Current holiday:\n" + JSON.stringify(holiday) + "\n");
     console.log("Current Class:\n" + JSON.stringify(course));
     console.log("\n---------------------------------------------------------------------")
-
 }
