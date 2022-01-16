@@ -109,8 +109,8 @@ function checkHoliday(today) {
     const holidaysThisMonth = holidays[today.getMonth()];
     if (holidaysThisMonth.length > 0) { // if there is a holiday this month
         for (let i = 0; i < holidaysThisMonth.length; i++) { // for each holiday
-            if (today.getDay() >= new Date(holidaysThisMonth[i].start).getDate() &&
-                today.getDay() <= new Date(holidaysThisMonth[i].end).getDate()) {
+            if (today.getDate() >= new Date(holidaysThisMonth[i].start).getDate() &&
+                today.getDate() <= new Date(holidaysThisMonth[i].end).getDate()) {
                 return holidaysThisMonth[i];
             }
         }
