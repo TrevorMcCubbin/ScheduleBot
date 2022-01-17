@@ -29,7 +29,7 @@ function online() {
  */
 function fetchSchedule() {
     console.time();
-    let currentClass = determineNextClass(schedule);
+    let currentClass = determineNextClass();
     console.timeEnd();
     let holiday = checkHoliday(new Date());
     setClass(holiday, currentClass);
@@ -37,10 +37,9 @@ function fetchSchedule() {
 
 /**
  * Determines which class is next in the schedule
- * @param {JSON} schedule JSON schedule data
  * @returns The next class in JSON format
  */
-function determineNextClass(schedule) {
+function determineNextClass() {
     const schedule = require("./json_files/scheduleSect2.json");
     const today = new Date();
     let dayOfWeek = today.getDay() - 1 >= 0 ? today.getDay() - 1 : 0; // -1 so that it works with the json array I set up (monday is 0 instead of 1 in the array)
