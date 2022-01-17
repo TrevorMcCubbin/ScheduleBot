@@ -28,8 +28,9 @@ function online() {
  * Fetches the json schedule and passes the data along.
  */
 function fetchSchedule() {
-    const schedule = require("./json_files/scheduleSect2.json");
+    console.time();
     let currentClass = determineNextClass(schedule);
+    console.timeEnd();
     let holiday = checkHoliday(new Date());
     setClass(holiday, currentClass);
 }
@@ -40,14 +41,11 @@ function fetchSchedule() {
  * @returns The next class in JSON format
  */
 function determineNextClass(schedule) {
+    const schedule = require("./json_files/scheduleSect2.json");
     const today = new Date();
     let dayOfWeek = today.getDay() - 1 >= 0 ? today.getDay() - 1 : 0; // -1 so that it works with the json array I set up (monday is 0 instead of 1 in the array)
     let time = today.getHours() + ":" + today.getMinutes();
-    // if semester hasn't started yet, show first class on jan 20th
-    if (today.getDate() < 20 && today.getMonth() === 0) {
-        let nextClass = schedule[3][0]; // first class on thursday
-        return nextClass;
-    }
+
     // default is first course of day
     let course = 0;
 
