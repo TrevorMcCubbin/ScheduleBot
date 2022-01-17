@@ -4,7 +4,7 @@ const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] })
 require("dotenv").config();
 const token = process.env.CLIENT_TOKEN;
 
-const timeCalcs = require("./timeFunctions.js")
+const { timeToMins, addTimes } = require("./timeFunctions.js")
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
@@ -43,7 +43,6 @@ function determineNextClass() {
     const schedule = require("./json_files/scheduleSect2.json");
     const today = new Date();
     let dayOfWeek = today.getDay() - 1 >= 0 ? today.getDay() - 1 : 0; // -1 so that it works with the json array I set up (monday is 0 instead of 1 in the array)
-    let time = today.getHours() + ":" + today.getMinutes();
 
     // default is first course of day
     let course = 0;
@@ -52,10 +51,11 @@ function determineNextClass() {
     if (dayOfWeek >= 5) {
         dayOfWeek = 0; // set today to monday
     } else {
+        let time = today.getHours() + ":" + today.getMinutes();
         while (course < schedule[dayOfWeek].length) {
             let current = schedule[dayOfWeek][course];
             // If the current class finished in 45 minutes or later, go to the next class
-            if (timeCalcs.timeToMins(time) >= timeCalcs.timeToMins(timeCalcs.addTimes(current.time, current.duration)) - 45) {
+            if (timeToMins(time) >= timeToMins(addTimes(current.time, current.duration)) - 45) {
                 course++;
             }
             // if we reached the final class today, switch to the first class tomorrow
@@ -80,12 +80,12 @@ function determineNextClass() {
  */
 function setClass(holiday, course) {
     username = course.name;
-    activity = course.classroom + ": " + course.time + "-" + timeCalcs.addTimes(course.time, course.duration)
+    activity = course.classroom + ": " + course.time + "-" + addTimes(course.time, course.duration)
     if (holiday && holiday.name != "online") {
         username = holiday.name;
         activity = "Until - " + holiday.end;
     } else if (holiday && holiday.name === "online") {
-        activity = holiday.name + ": " + course.time + "-" + timeCalcs.addTimes(course.time, course.duration);
+        activity = holiday.name + ": " + course.time + "-" + addTimes(course.time, course.duration);
     }
     if (username != client.user.username) {
         client.user.setUsername(username)
