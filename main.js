@@ -28,9 +28,7 @@ function online() {
  * Fetches the json schedule and passes the data along.
  */
 function fetchSchedule() {
-    console.time();
     let currentClass = determineNextClass();
-    console.timeEnd();
     let holiday = checkHoliday(new Date());
     setClass(holiday, currentClass);
 }
