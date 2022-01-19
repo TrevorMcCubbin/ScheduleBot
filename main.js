@@ -28,18 +28,19 @@ function online() {
  * Fetches the json schedule and passes the data along.
  */
 function fetchSchedule() {
-    let currentClass = determineNextClass();
-    let holiday = checkHoliday(new Date());
+    let today = new Date();
+    let currentClass = determineNextClass(today);
+    let holiday = checkHoliday(today);
     setClass(holiday, currentClass);
 }
 
 /**
  * Determines which class is next in the schedule
+ * @param {Date} today the date you want to get the next class for
  * @returns The next class in JSON format
  */
-function determineNextClass() {
+function determineNextClass(today) {
     const schedule = require("./json_files/scheduleSect2.json");
-    const today = new Date();
     let dayOfWeek = today.getDay() - 1 >= 0 ? today.getDay() - 1 : 0; // -1 so that it works with the json array I set up (monday is 0 instead of 1 in the array)
 
     // default is first course of day
@@ -57,7 +58,8 @@ function determineNextClass() {
                 course++;
             }
             // if we reached the final class today, switch to the first class tomorrow
-            if (course === schedule[dayOfWeek].length - 1 && dayOfWeek < 5) {
+            if (course === schedule[dayOfWeek].length - 1 && dayOfWeek < 5 ||
+                schedule[dayOfWeek].length === 1 && course === 1 && dayOfWeek < 5) {
                 course = 0; // first class of day
                 if (dayOfWeek === 4) { // If it's friday
                     dayOfWeek = 0; // set day to monday
