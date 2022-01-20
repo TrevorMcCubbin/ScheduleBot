@@ -28,10 +28,15 @@ function online() {
  * Fetches the json schedule and passes the data along.
  */
 function fetchSchedule() {
-    let today = new Date();
-    let currentClass = determineNextClass(today);
-    let holiday = checkHoliday(today);
-    setClass(holiday, currentClass);
+    try {
+        let today = new Date();
+        let currentClass = determineNextClass(today);
+        let holiday = checkHoliday(today);
+        setClass(holiday, currentClass);
+    } catch (error) {
+        console.error(error);
+    }
+
 }
 
 /**
@@ -40,6 +45,8 @@ function fetchSchedule() {
  * @returns The next class in JSON format
  */
 function determineNextClass(today) {
+    console.log("Fetching next class");
+
     const schedule = require("./json_files/scheduleSect2.json");
     let dayOfWeek = today.getDay() - 1 >= 0 ? today.getDay() - 1 : 0; // -1 so that it works with the json array I set up (monday is 0 instead of 1 in the array)
 
@@ -81,10 +88,10 @@ function determineNextClass(today) {
 function setClass(holiday, course) {
     username = course.name;
     activity = course.classroom + ": " + course.time + "-" + addTimes(course.time, course.duration)
-    if (holiday && holiday.name != "online") {
+    if (holiday && holiday.name.toString() !== "Online") {
         username = holiday.name;
         activity = "Until - " + holiday.end;
-    } else if (holiday && holiday.name === "online") {
+    } else if (holiday && holiday.name.toString() === "Online") {
         activity = holiday.name + ": " + course.time + "-" + addTimes(course.time, course.duration);
     }
     if (username != client.user.username) {
@@ -102,6 +109,8 @@ function setClass(holiday, course) {
  * @param {Date} today 
  */
 function checkHoliday(today) {
+    console.log("Fetching holidays");
+
     const holidays = require("./json_files/holidays.json");
     const holidaysThisMonth = holidays[today.getMonth()];
     if (holidaysThisMonth.length > 0) { // if there is a holiday this month
