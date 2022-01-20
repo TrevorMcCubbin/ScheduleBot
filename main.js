@@ -58,15 +58,14 @@ function determineNextClass(today) {
         dayOfWeek = 0; // set today to monday
     } else {
         let time = today.getHours() + ":" + today.getMinutes();
-        while (course < schedule[dayOfWeek].length) {
+        while (course < schedule[dayOfWeek].length - 1) {
             let current = schedule[dayOfWeek][course];
             // If the current class finished in 45 minutes or later, go to the next class
             if (timeToMins(time) >= timeToMins(addTimes(current.time, current.duration)) - 45) {
                 course++;
             }
             // if we reached the final class today, switch to the first class tomorrow
-            if (course === schedule[dayOfWeek].length - 1 && dayOfWeek < 5 ||
-                schedule[dayOfWeek].length === 1 && course === 1 && dayOfWeek < 5) {
+            if (course === schedule[dayOfWeek].length && dayOfWeek < 5) {
                 course = 0; // first class of day
                 if (dayOfWeek === 4) { // If it's friday
                     dayOfWeek = 0; // set day to monday
