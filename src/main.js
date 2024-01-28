@@ -1,14 +1,16 @@
-const Discord = require("discord.js");
-const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] })
+const { Client, GatewayIntentBits } = require("discord.js");
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+});
 
 require("dotenv").config();
 const token = process.env.CLIENT_TOKEN;
 
-const { timeToMins, addTimes } = require("./timeFunctions.js")
+const { timeToMins, addTimes } = require("./timeFunctions.js");
 
 // When the client is ready, run this code (only once)
-client.once('ready', () => {
-    online();
+client.once("ready", () => {
+  online();
 });
 
 client.login(token);
@@ -17,26 +19,25 @@ client.login(token);
  * Called as soon as the bot connects to the discord server
  */
 function online() {
-    console.log('online');
+  console.log("online");
+  fetchSchedule();
+  setInterval(function () {
     fetchSchedule();
-    setInterval(function () {
-        fetchSchedule()
-    }, 1000 * 60 * 5); // every 5 minutes
+  }, 1000 * 60 * 5); // every 5 minutes
 }
 
 /**
  * Fetches the json schedule and passes the data along.
  */
 function fetchSchedule() {
-    try {
-        let today = new Date();
-        let currentClass = determineNextClass(today);
-        let holiday = checkHoliday(today);
-        setClass(holiday, currentClass);
-    } catch (error) {
-        console.error(error);
-    }
-
+  try {
+    let today = new Date();
+    let currentClass = determineNextClass(today);
+    let holiday = checkHoliday(today);
+    setClass(holiday, currentClass);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 /**
@@ -45,41 +46,47 @@ function fetchSchedule() {
  * @returns The next class in JSON format
  */
 function determineNextClass(today) {
-    console.log("Fetching next class");
+  console.log("Fetching next class");
 
-    const schedule = require("./json_files/scheduleSect2.json");
-    let dayOfWeek = today.getDay() - 1 >= 0 ? today.getDay() - 1 : 0; // -1 so that it works with the json array I set up (monday is 0 instead of 1 in the array)
+  const schedule = require("./json_files/scheduleSect2.json");
+  let dayOfWeek = today.getDay() - 1 >= 0 ? today.getDay() - 1 : 0; // -1 so that it works with the json array I set up (monday is 0 instead of 1 in the array)
 
-    // default is first course of day
-    let course = 0;
+  // default is first course of day
+  let course = 0;
 
-    // For sunday and saturday, fetch the schedule for monday
-    if (dayOfWeek >= 5) {
-        dayOfWeek = 0; // set today to monday
-    } else {
-        let time = today.getHours() + ":" + today.getMinutes();
-        let i = 0;
-        let current = schedule[dayOfWeek][course];
-        while (i < schedule[dayOfWeek].length) {
-            // If the current class finished in 30 minutes or later, go to the next class
-            if (timeToMins(time) >= timeToMins(addTimes(current.time, current.duration)) - 30) {
-                course++;
-                current = schedule[dayOfWeek][course];
-            }
-            i++;
-        }
-        // if after last class of day
-        if (timeToMins(time) >= timeToMins(addTimes(current.time, current.duration))) {
-            course = 0; // first class of day
-            if (dayOfWeek === 4) { // If it's friday
-                dayOfWeek = 0; // set day to monday
-            } else {
-                dayOfWeek++; // otherwise just go to the next day of the week
-            }
-        }
+  // For sunday and saturday, fetch the schedule for monday
+  if (dayOfWeek >= 5) {
+    dayOfWeek = 0; // set today to monday
+  } else {
+    let time = today.getHours() + ":" + today.getMinutes();
+    let i = 0;
+    let current = schedule[dayOfWeek][course];
+    while (i < schedule[dayOfWeek].length) {
+      // If the current class finished in 30 minutes or later, go to the next class
+      if (
+        timeToMins(time) >=
+        timeToMins(addTimes(current.time, current.duration)) - 30
+      ) {
+        course++;
+        current = schedule[dayOfWeek][course];
+      }
+      i++;
     }
-    let nextClass = schedule[dayOfWeek][course];
-    return nextClass;
+    // if after last class of day
+    if (
+      timeToMins(time) >= timeToMins(addTimes(current.time, current.duration))
+    ) {
+      course = 0; // first class of day
+      if (dayOfWeek === 4) {
+        // If it's friday
+        dayOfWeek = 0; // set day to monday
+      } else {
+        dayOfWeek++; // otherwise just go to the next day of the week
+      }
+    }
+  }
+  let nextClass = schedule[dayOfWeek][course];
+  return nextClass;
 }
 
 /**
@@ -87,42 +94,55 @@ function determineNextClass(today) {
  * @param {JSON} course The class object that will be set as the status
  */
 function setClass(holiday, course) {
-    username = course.name;
-    activity = course.classroom + ": " + course.time + "-" + addTimes(course.time, course.duration)
-    if (holiday && holiday.name.toString() !== "Online") {
-        username = holiday.name;
-        activity = "Until - " + holiday.end;
-    } else if (holiday && holiday.name.toString() === "Online") {
-        activity = holiday.name + ": " + course.time + "-" + addTimes(course.time, course.duration);
-    }
-    if (username != client.user.username) {
-        client.user.setUsername(username)
-            .catch(() => {
-                console.log("Could not change username");
-            })
-    }
-    console.log(username)
-    client.user.setActivity(activity);
-    showLog(holiday, course);
+  username = course.name;
+  activity =
+    course.classroom +
+    ": " +
+    course.time +
+    "-" +
+    addTimes(course.time, course.duration);
+  if (holiday && holiday.name.toString() !== "Online") {
+    username = holiday.name;
+    activity = "Until - " + holiday.end;
+  } else if (holiday && holiday.name.toString() === "Online") {
+    activity =
+      holiday.name +
+      ": " +
+      course.time +
+      "-" +
+      addTimes(course.time, course.duration);
+  }
+  if (username != client.user.username) {
+    client.user.setUsername(username).catch(() => {
+      console.log("Could not change username");
+    });
+  }
+  console.log(username);
+  client.user.setActivity(activity);
+  showLog(holiday, course);
 }
 
 /**
  * checks if the requested date is found in the holdiays json
- * @param {Date} today 
+ * @param {Date} today
  */
 function checkHoliday(today) {
-    console.log("Fetching holidays");
+  console.log("Fetching holidays");
 
-    const holidays = require("./json_files/holidays.json");
-    const holidaysThisMonth = holidays[today.getMonth()];
-    if (holidaysThisMonth.length > 0) { // if there is a holiday this month
-        for (let i = 0; i < holidaysThisMonth.length; i++) { // for each holiday
-            if (today.getDate() >= new Date(holidaysThisMonth[i].start).getDate() &&
-                today.getDate() <= new Date(holidaysThisMonth[i].end).getDate()) {
-                return holidaysThisMonth[i];
-            }
-        }
+  const holidays = require("./json_files/holidays.json");
+  const holidaysThisMonth = holidays[today.getMonth()];
+  if (holidaysThisMonth.length > 0) {
+    // if there is a holiday this month
+    for (let i = 0; i < holidaysThisMonth.length; i++) {
+      // for each holiday
+      if (
+        today.getDate() >= new Date(holidaysThisMonth[i].start).getDate() &&
+        today.getDate() <= new Date(holidaysThisMonth[i].end).getDate()
+      ) {
+        return holidaysThisMonth[i];
+      }
     }
+  }
 }
 
 /**
@@ -131,10 +151,14 @@ function checkHoliday(today) {
  * @param {JSON} course course json
  */
 function showLog(holiday, course) {
-    const today = new Date();
-    console.log("\n---------------------------------------------------------------------")
-    console.log(today.toString() + "\n");
-    console.log("Current holiday:\n" + JSON.stringify(holiday) + "\n");
-    console.log("Current Class:\n" + JSON.stringify(course));
-    console.log("\n---------------------------------------------------------------------")
+  const today = new Date();
+  console.log(
+    "\n---------------------------------------------------------------------"
+  );
+  console.log(today.toString() + "\n");
+  console.log("Current holiday:\n" + JSON.stringify(holiday) + "\n");
+  console.log("Current Class:\n" + JSON.stringify(course));
+  console.log(
+    "\n---------------------------------------------------------------------"
+  );
 }
