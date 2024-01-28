@@ -4,11 +4,12 @@
   "description": "A bot used to tell you which class you have next on Discord",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/tmccubbin/schedule-bot.git"
+    "url": "git+https://github.com/TrevorMcCubbin/ScheduleBot.git"
   },
   "keywords": [
     "discord",
@@ -19,9 +20,9 @@
   "author": "Trevor McCubbin",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/tmccubbin/schedule-bot/issues"
+    "url": "https://github.com/TrevorMcCubbin/ScheduleBot/issues"
   },
-  "homepage": "https://gitlab.com/tmccubbin/schedule-bot#readme",
+  "homepage": "https://github.com/TrevorMcCubbin/ScheduleBot#readme",
   "dependencies": {
     "discord.js": "^13.5.0",
     "dotenv": "^10.0.0"
