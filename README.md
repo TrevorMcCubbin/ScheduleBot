@@ -1,61 +1,83 @@
-<div id="top"></div>
+# Schedule Bot
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://gitlab.com/tmccubbin/schedule-bot/-/blob/main/images/omnivox_logo.png">
-    <img src="./images/omnivox_logo.png" alt="Logo" width="80" height="80">
-  </a>
+Welcome to the documentation for ScheduleBot - A bot created display when your next class is scheduled.
 
-  <h3 align="center">Schedule Bot</h3>
+## Table of Contents
 
-  <p align="center">
-    A bot to display when your next class is scheduled
-    <br />
-    <a href="https://gitlab.com/tmccubbin/schedule-bot"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    ·
-    <a href="https://gitlab.com/tmccubbin/schedule-bot/-/issues">Report Bug</a>
-    ·
-    <a href="https://gitlab.com/tmccubbin/schedule-bot/-/issues">Request Feature</a>
-  </p>
-</div>
+1. [Project Overview](#project-overview)
+2. [Prerequisites](#prerequisites)
+3. [Getting Started](#getting-started)
+   - [Installing Dependencies](#installing-dependencies)
+   - [Configuring .env](#configuring-env)
+   - [Starting the Bot](#starting-the-bot)
+4. [Usage](#usage)
+5. [Contributing](#contributing)
+6. [License](#license)
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-</details>
+## Project Overview
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
-<div align="center">
-    <img src="./images/example_discord.png" alt="Preview of bot in Discord" width="185px" height="321px"/>
-</div>
+This Discord.js bot is designed to display information about your upcoming classes in school.
 
+![Preview of Schedule Bot in action](./images/example_discord.png)
 
-This projects fetchs your next class and displays it as a bot in Discord.
+## Prerequisites
 
-Can be configured for any schedule as long as the JSON format stays the same.
+Before you begin, ensure you have the following installed:
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/) (Node Package Manager)
+- [Git](https://git-scm.com/) (Optional, but recommended for version control)
 
-### Built With
+## Getting Started
 
-* [Node.js](https://nodejs.org/)
-* [Discord.js](https://discord.js.org/)
-* [dotenv](https://www.npmjs.com/package/dotenv)
+### Installing Dependencies
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+1. Clone this repository to your local machine:
 
+   ```bash
+   git clone https://github.com/your-username/your-discord-bot.git
+   ```
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[product-screenshot]: ./images/example_discord.png
+2. Navigate to the project directory:
+
+   ```bash
+   cd ScheduleBot
+   ```
+
+3. Install the project dependencies:
+
+   ```bash
+   npm install
+   ```
+
+## Configuring .env
+
+Create a .env file in the root directory of your project and fill in the following values:
+
+```env
+CLIENT_TOKEN = your_bot_token_here
+```
+
+Replace your_bot_token_here with your Discord bot token
+
+## Starting the Bot
+
+Run the following command to start your bot:
+
+```bash
+npm start
+```
+
+Your Discord bot should now be online and ready to respond to commands.
+
+## Usage
+
+This bot does not accept any form of user input, it reads everything from the json_files directory.
+
+## Contributing
+
+If you'd like to contribute to this project, please create an issue describing what you are changing and follow that with a pull request.
+
+## License
+
+Anyone is free to use or modify this source code.
